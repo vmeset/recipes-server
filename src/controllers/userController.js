@@ -10,6 +10,14 @@ class UserController {
       console.log(e)
     }
   }
+  async getAll (req, res, next) {
+    try {
+      const users = await UserModel.find()
+      res.json(users)
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }
 
 module.exports = new UserController()
