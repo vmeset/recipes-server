@@ -14,6 +14,7 @@ class UserController {
         }
       })
       console.log('test')
+      console.log('test2')
       // console.log(newUser)
       newUser.save()
       // const newUser = await userModel.create({username, password, email
