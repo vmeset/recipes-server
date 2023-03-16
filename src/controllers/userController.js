@@ -1,14 +1,36 @@
 const userModel = require('../models/userModel')
+const fs = require('fs')
 
 class UserController {
   async register (req, res, next) {
     try {
-      const {username, password} = req.body
-      const user = await userModel.findOne({username})
-      if(user) {
-        return res.json('user already exists')
-      }
-      res.json(user)
+      const {username, password, email} = req.body
+      const newUser = new userModel({
+        username,
+        password,
+        avatar: {
+          data: req.file.filename,
+          contentType: 'image/png'
+        }
+      })
+      // console.log(newUser)
+      newUser.save()
+      // const newUser = await userModel.create({username, password, email
+        // avatar: {
+        //   data: req.file.filename,
+        //   contentType: 'image/png'
+        // }
+      // })
+
+      // return res.json(newUser)
+      
+      res.json(newUser)
+
+      // const user = await userModel.findOne({username})
+      // if(user) {
+      //   return res.json('user already exists')
+      // }
+      // res.json(user)
     } catch (e) {
       console.log(e)
     }
