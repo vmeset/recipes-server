@@ -5,29 +5,24 @@ class UserController {
   async register (req, res, next) {
     try {
       const {username, password, email} = req.body
-      const newUser = new userModel({
+
+      const newUser = await userModel.create({
         username,
         password,
+        email,
         avatar: {
           data: req.file.filename,
           contentType: 'image/png'
         }
       })
-      // console.log(newUser)
-      newUser.save()
-      // const newUser = await userModel.create({username, password, email
-        // avatar: {
-        //   data: req.file.filename,
-        //   contentType: 'image/png'
-        // }
-      // })
 
-      // return res.json(newUser)
+      return res.json(newUser)
       
-      res.json(newUser)
+      // res.json(newUser)
 
-      // const user = await userModel.findOne({username})
-      // if(user) {
+      // const user = await userModel.findOne({email})
+      // const candidate = await userModel.findOne({username})
+      // if(user || candidate) {
       //   return res.json('user already exists')
       // }
       // res.json(user)
