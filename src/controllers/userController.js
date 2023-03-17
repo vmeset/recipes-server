@@ -13,7 +13,6 @@ class UserController {
           contentType: 'image/png'
         }
       })
-      // console.log(newUser)
       newUser.save()
       // const newUser = await userModel.create({username, password, email
         // avatar: {
