@@ -3,6 +3,7 @@ const userModel = require('../models/userModel')
 const bcrypt = require('bcrypt')
 const uuid = require('uuid')
 const mailService = require('./mailService')
+const tokenService = require('./tokenService.js')
 
 class UserService {
   async register(email, password, username) {
@@ -23,6 +24,7 @@ class UserService {
       activationLink
     })
     await mailService.sendActivationLink(email, activationLink)
+    const tokens = tokenService.generateTokens({email, password})
   }
 }
 
