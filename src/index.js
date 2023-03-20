@@ -5,6 +5,7 @@ const cors = require('cors')
 const router = require('./routes/index')
 const cookieParser = require('cookie-parser')
 const path = require('path')
+const errorHandlingMiddleware = require('./middleware/errorHandlingMiddleware')
 
 const PORT = process.env.PORT
 const DB_URL = process.env.DB_URL
@@ -16,6 +17,7 @@ app.use(cookieParser())
 app.use(cors())
 app.use('/api', router)
 app.use(express.static(path.resolve(__dirname, '../uploads')))
+app.use(errorHandlingMiddleware)
 
 async function startApp() {
   try {
