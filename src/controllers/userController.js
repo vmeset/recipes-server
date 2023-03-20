@@ -1,31 +1,19 @@
 const userModel = require('../models/userModel')
+const UserService = require('../services/userService')
 const fs = require('fs')
 
 class UserController {
   async register (req, res, next) {
     try {
       const {username, password, email} = req.body
+      const avatar = {
+        data: req.file.filename,
+        contentType: 'image/png'
+      }
+      const data = await UserService.register(username, password, email, avatar)
+      res.cookie('refreshToken', data.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
 
-      const newUser = await userModel.create({
-        username,
-        password,
-        email,
-        avatar: {
-          data: req.file.filename,
-          contentType: 'image/png'
-        }
-      })
-
-      return res.json(newUser)
-      
-      // res.json(newUser)
-
-      // const user = await userModel.findOne({email})
-      // const candidate = await userModel.findOne({username})
-      // if(user || candidate) {
-      //   return res.json('user already exists')
-      // }
-      // res.json(user)
+      return res.json(data)
     } catch (e) {
       console.log(e)
     }
@@ -61,9 +49,11 @@ class UserController {
   }
   async activate (req, res, next) {
     try {
-
+      const link = req.params.link
+      await UserService.activate(link)
+      return res.redirect(process.env.CLIENT_URL)
     } catch (e) {
-      
+      console.log(e.message)
     }
   }
 }

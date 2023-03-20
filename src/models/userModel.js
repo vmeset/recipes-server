@@ -5,8 +5,8 @@ const UserSchema = new mongoose.Schema({
   avatar: {data: Buffer, contentType: String},
   password: {type: String, required: true},
   email: {type: String, required: true, unique: true},
-  // isActivated: {type: Boolean, default: false},
-  // activationLink: {type: String}
+  isActivated: {type: Boolean, default: false},
+  activationLink: {type: String}
 })
 
-module.exports = mongoose.model('users', UserSchema)
+module.exports = mongoose.model('User', UserSchema)
