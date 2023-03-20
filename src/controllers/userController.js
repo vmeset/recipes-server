@@ -10,12 +10,12 @@ class UserController {
       if(!errors.isEmpty()){
         return next(ApiError.badRequest('Неверно введены данные для регистрации', errors.array()))
       }
-      const {username, password, email} = req.body
+      const {password, email} = req.body
       const avatar = {
         data: req.file.filename,
         contentType: 'image/png'
       }
-      const data = await userService.register(username, password, email, avatar)
+      const data = await userService.register(password, email, avatar)
       res.cookie('refreshToken', data.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
 
       return res.json(data)
@@ -44,7 +44,10 @@ class UserController {
   }
   async logout (req, res, next) {
     try {
-
+      const {refreshToken} = req.cookies
+      const token = await userService.logout(refreshToken)
+      res.clearCookie('refreshToken')
+      return res.json(token)
     } catch (e) {
       next(e)
     }

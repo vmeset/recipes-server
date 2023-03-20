@@ -7,7 +7,7 @@ const UserDto = require('../dto/userDto')
 const ApiError = require('../error/ApiError')
 
 class UserService {
-  async register(username, password, email, avatar) {
+  async register(password, email, avatar) {
 
     const candidate = await userModel.findOne({email})
     if(candidate) {
@@ -18,7 +18,6 @@ class UserService {
     const activationLink = uuid.v4()
 
     const newUser = await userModel.create({
-      username,
       password: hashPassword,
       email,
       avatar,
@@ -59,6 +58,11 @@ class UserService {
     await tokenService.saveToken(userDto.id, tokens.refreshToken)
 
     return {...tokens, user: userDto}
+  }
+
+  async logout(refreshToken) {
+    const token = await tokenService.removeToken(refreshToken)
+    return token
   }
 }
 
