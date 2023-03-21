@@ -82,6 +82,11 @@ class UserService {
     
     return {...tokens, user: userDto}
   }
+
+  async fetchAll() {
+    const users = await userModel.find()
+    return users
+  }
 }
 
 module.exports = new UserService()

@@ -1,7 +1,8 @@
 const Router = require('express')
+const {body} = require('express-validator')
 const userController = require('../controllers/userController')
 const imgMiddleware = require('../middleware/imgMiddleware')
-const {body} = require('express-validator')
+const authMiddleware = require('../middleware/authMiddleware')
 
 const router = new Router()
 
@@ -12,7 +13,7 @@ imgMiddleware.single('avatar'),
   userController.register)
 router.post('/login', userController.login)
 router.post('/logout', userController.logout)
-router.get('/fetch', userController.getAll)
+router.get('/fetch', authMiddleware, userController.fetchAll)
 router.get('/activate/:link', userController.activate)
 router.get('/refresh', userController.refresh)
 

@@ -23,10 +23,10 @@ class UserController {
       next(e)
     }
   }
-  async getAll (req, res, next) {
+  async fetchAll (req, res, next) {
     try {
-      const users = await userModel.find()
-      res.json(users)
+      const users = await userService.fetchAll()
+      return res.json(users)
     } catch (e) {
       next(e)
     }
